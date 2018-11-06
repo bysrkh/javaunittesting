@@ -1,6 +1,7 @@
 package com.mitrais.unittesting.business;
 
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.util.List;
 
@@ -55,4 +56,32 @@ public class ListMockTest {
         verify(mock, atMost(2)).get(anyInt());
         verify(mock, never()).get(2);
     }
+
+    @Test
+    public void argumentCaptoring(){
+        // SUT
+        mock.add("someString");
+
+        // verification
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+        verify(mock).add(captor.capture());
+
+        assertEquals("someString", captor.getValue());
+    }
+
+    @Test
+    public void multipleArgumentCaptoring(){
+        // SUT
+        mock.add("someString1");
+        mock.add("someString2");
+
+        // verification
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+        verify(mock, times(2)).add(captor.capture());
+
+        List<String> allValues = captor.getAllValues();
+        assertEquals("someString1", allValues.get(0));
+        assertEquals("someString2", allValues.get(1));
+    }
+
 }
