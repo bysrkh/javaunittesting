@@ -3,9 +3,11 @@ package com.mitrais.unittesting.business;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
@@ -82,6 +84,37 @@ public class ListMockTest {
         List<String> allValues = captor.getAllValues();
         assertEquals("someString1", allValues.get(0));
         assertEquals("someString2", allValues.get(1));
+    }
+
+    @Test
+    public void mocking(){
+        ArrayList arrayListMock = mock(ArrayList.class);
+        assertNull(arrayListMock.get(0)); // returning default (null)
+        assertEquals(0, arrayListMock.size()); // returning default (0)
+        arrayListMock.add("Here 1"); // did not take effect since it is mock
+        arrayListMock.add("Here 2"); // did not take effect since it is mock
+        assertEquals(0, arrayListMock.size()); // 0
+        when(arrayListMock.size()).thenReturn(5);
+        assertEquals(5, arrayListMock.size()); // 5
+    }
+
+    @Test
+    public void spying(){
+        ArrayList<String> arrayListSpy = spy(ArrayList.class);
+        arrayListSpy.add("Here 0"); // did not take effect since it is mock
+        assertEquals("Here 0", arrayListSpy.get(0)); // returning default (null)
+        assertEquals(1, arrayListSpy.size()); // returning default (0)
+        arrayListSpy.add("Here 1"); // did not take effect since it is mock
+        arrayListSpy.add("Here 2"); // did not take effect since it is mock
+        assertEquals(3, arrayListSpy.size()); // 2
+
+        when(arrayListSpy.size()).thenReturn(5);
+        assertEquals(5, arrayListSpy.size()); // 5
+
+        arrayListSpy.add("Here 4"); // did not take effect since it is mock
+        assertEquals(5, arrayListSpy.size()); // Still 5 because when happend
+
+        verify(arrayListSpy).add("Here 4");
     }
 
 }
