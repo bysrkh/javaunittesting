@@ -2,6 +2,7 @@ package com.mitrais.unittesting.controller;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
@@ -28,11 +29,12 @@ public class ItemControllerTest {
                 .get("/dummy-item")
                 .accept(MediaType.APPLICATION_JSON);
 
-        mockMvc.perform(request)
+        MvcResult result = mockMvc.perform(request)
                 .andExpect(status().isOk())
                 .andExpect(content().json("{\"id\":1,\"name\":\"Ball\",\"price\":10000,\"quantity\":20}"))
                 .andReturn();
 
+        JSONAssert.assertEquals("{\"id\":1,\"name\":\"Ball\",\"price\":10000,\"quantity\":20}", result.getResponse().getContentAsString(), false);
 
     }
 }
