@@ -34,7 +34,5 @@ public class ItemControllerTest {
                 .andExpect(content().json("{\"id\":1,\"name\":\"Ball\",\"price\":10000,\"quantity\":20}"))
                 .andReturn();
 
-        JSONAssert.assertEquals("{\"id\":1,\"name\":\"Ball\",\"price\":10000,\"quantity\":20}", result.getResponse().getContentAsString(), false);
-
     }
 }
