@@ -5,14 +5,12 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class ListMockTest {
 
-    List mock = mock(List.class);
+    List<String> mock = mock(List.class);
 
     @Test
     public void size_Basic(){
@@ -40,5 +38,21 @@ public class ListMockTest {
         when(mock.get(anyInt())).thenReturn("javaBootcamp");
         assertEquals("javaBootcamp", mock.get(0));
         assertEquals("javaBootcamp", mock.get(1));
+    }
+
+    @Test
+    public void verificationBasics(){
+        // System Under Test (SUT)
+        String value1 = mock.get(0);
+        String value2 = mock.get(1);
+
+        // verify
+        // important for not returning method
+        verify(mock).get(0);
+        verify(mock, times(2)).get(anyInt());
+        verify(mock, atLeast(1)).get(anyInt());
+        verify(mock, atLeastOnce()).get(anyInt());
+        verify(mock, atMost(2)).get(anyInt());
+        verify(mock, never()).get(2);
     }
 }
