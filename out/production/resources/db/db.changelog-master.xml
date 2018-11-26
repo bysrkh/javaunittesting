@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet author="bysrkh" id="00001">
+        <createTable tableName="BOOK">
+            <column name="ID" type="VARCHAR(36)">
+                <constraints nullable="false" unique="true" primaryKey="true" primaryKeyName="PK_BOOK"/>
+            </column>
+            <column name="ISBN" type="VARCHAR(32)"/>
+            <column name="TITLE" type="VARCHAR(32)"/>
+            <column name="AUTHOR" type="VARCHAR(32)"/>
+            <column name="STATUS" type="TINYINT"/>
+        </createTable>
+        <rollback>
+            <dropTable tableName="BOOK"/>
+        </rollback>
+    </changeSet>
+    <changeSet author="bysrkh" id="00002">
+        <createTable tableName="SHELF">
+            <column name="ID" type="VARCHAR(36)">
+                <constraints nullable="false" unique="true" primaryKey="true" primaryKeyName="PK_SHELF"/>
+            </column>
+            <column name="MAX_CAPACITY" type="INT"/>
+            <column name="CURRENT_CAPACITY" type="INT"/>
+        </createTable>
+        <rollback>
+            <dropTable tableName="SHELF"/>
+        </rollback>
+    </changeSet>
+    <changeSet author="bysrkh" id="00003">
+        <createTable tableName="SHELF_BOOK">
+            <column name="SHELF_ID" type="VARCHAR(36)">
+                <constraints nullable="false" foreignKeyName="FK_SHELF_BOOK_SHELF" referencedTableName="SHELF" referencedColumnNames="ID"/>
+            </column>
+            <column name="BOOK_ID" type="VARCHAR(36)">
+                <constraints nullable="false" foreignKeyName="FK_SHELF_BOOK_BOOK" referencedTableName="BOOK" referencedColumnNames="ID"/>
+            </column>
+        </createTable>
+        <addPrimaryKey
+                       columnNames="SHELF_ID, BOOK_ID"
+                       constraintName="PK_SHELF_BOOK"
+                       tableName="SHELF_BOOK"/>
+        <rollback>
+            <dropTable tableName="SHELF_BOOK"/>
+        </rollback>
+    </changeSet>
+    <changeSet author="bysrkh" id="00004">
+        <loadData file="db/book.csv"
+                  quotchar="&quot;"
+                  separator=","
+                  tableName="BOOK">
+        </loadData>
+    </changeSet>
+    <changeSet author="bysrkh" id="00005">
+        <loadData file="db/shelf.csv"
+                  quotchar="&quot;"
+                  separator=","
+                  tableName="SHELF">
+        </loadData>
+    </changeSet>
+</databaseChangeLog>
