@@ -16,7 +16,7 @@ public class Shelf {
     private int maxCapacity;
     @JsonProperty("currentCapacity")
     private int currentCapacity;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(orphanRemoval = true)
     @JoinTable(
             name = "shelf_book",
             joinColumns = {@JoinColumn(name = "shelf_id")},

@@ -34,8 +34,6 @@ public class BookControllerTest {
     @MockBean
     private BookService bookService;
     @Autowired
-    private BookParameter parameters;
-    @Autowired
     private List<Book> books;
 
     @DirtiesContext

@@ -36,7 +36,9 @@ public class ShelfServiceImpl implements ShelfService {
         if(existingShelf.getCurrentCapacity() < existingShelf.getMaxCapacity()) {
             for (Book book: shelf.getBooks()) {
                 book = bookRepository.findOne(book.getId());
+                book.setStatus((byte) 1);
                 existingShelf.getBooks().add(book);
+                existingShelf.setCurrentCapacity(existingShelf.getCurrentCapacity() + 1);
             }
             shelfRepository.save(existingShelf);
         }
@@ -50,7 +52,9 @@ public class ShelfServiceImpl implements ShelfService {
         if(existingShelf.getCurrentCapacity() > 0) {
             for (Book book: shelf.getBooks()) {
                 book = bookRepository.findOne(book.getId());
+                book.setStatus((byte) 0);
                 existingShelf.getBooks().remove(book);
+                existingShelf.setCurrentCapacity(existingShelf.getCurrentCapacity() - 1);
             }
             shelfRepository.save(existingShelf);
         }
